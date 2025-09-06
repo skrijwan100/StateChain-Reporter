@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { useNavigate, useParams } from 'react-router-dom';
+import SuccessSubmit from './SuccessSubmit';
 
 // Data for the issues - in a real app, this would come from an API
 const issuesData = [
@@ -86,10 +87,10 @@ const IssueCard = ({ issue }) => {
                 <h2 className="text-xl font-bold text-white mb-2">{issue.title}</h2>
                 <p className="text-xs text-gray-400 truncate mb-4">{issue.hash}</p>
                 <div className="flex items-center text-sm text-gray-400 mb-4">
-                     <UserIcon />
-                     <span>{issue.user}</span>
-                     <span className="mx-2">·</span>
-                     <span>{issue.timestamp}</span>
+                    <UserIcon />
+                    <span>{issue.user}</span>
+                    <span className="mx-2">·</span>
+                    <span>{issue.timestamp}</span>
                 </div>
                 <button onClick={() => navigate(`/allIssues/${stateName}/${issue.hash}`)} className="w-full cursor-pointer bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50">
                     View Details
@@ -102,41 +103,41 @@ const IssueCard = ({ issue }) => {
 
 // Main App Component
 export default function AllIssues() {
-  return (
-    <div className="bg-gray-900 text-gray-300 font-sans">
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
+    return (
+        <div className="bg-gray-900 text-gray-300 font-sans">
+            <div className="flex flex-col min-h-screen">
+                <Navbar />
 
-        <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-24 py-8 md:py-12">
-            <div className="mb-12 flex items-center flex-col justify-center">
-                <h1 className="text-4xl font-bold text-white tracking-tight mb-2">State Issue Reporting System</h1>
-                <p className="text-lg text-gray-400 mb-4">Select your state to report issues securely on the blockchain</p>
-                <div className="flex items-center space-x-6 text-sm text-gray-300">
-                    <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                        <span>Network Status: <span className="font-semibold text-green-400">Active</span></span>
+                <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-24 py-8 md:py-12">
+                    <div className="mb-12 flex items-center flex-col justify-center">
+                        <h1 className="text-4xl font-bold text-white tracking-tight mb-2">State Issue Reporting System</h1>
+                        <p className="text-lg text-gray-400 mb-4">Select your state to report issues securely on the blockchain</p>
+                        <div className="flex items-center space-x-6 text-sm text-gray-300">
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span>Network Status: <span className="font-semibold text-green-400">Active</span></span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span>Smart Contract: <span className="font-semibold text-green-400">Verified</span></span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                <span>Last Updated: <span className="font-semibold text-blue-400">Just now</span></span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                        <span>Smart Contract: <span className="font-semibold text-green-400">Verified</span></span>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {issuesData.map(issue => (
+                            <IssueCard key={issue.id} issue={issue} />
+                        ))}
                     </div>
-                     <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                        <span>Last Updated: <span className="font-semibold text-blue-400">Just now</span></span>
-                    </div>
-                </div>
+                </main>
+
+                <Footer />
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {issuesData.map(issue => (
-                    <IssueCard key={issue.id} issue={issue} />
-                ))}
-            </div>
-        </main>
-
-        <Footer />
-      </div>
-    </div>
-  );
+        </div>
+    );
 }
 
