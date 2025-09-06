@@ -15,7 +15,7 @@ import {
     Map,
     Moon // Added for dark mode toggle
 } from 'lucide-react'; // White background logo
-import wbimg from "../assets/wb.png"
+import gu from "../assets/guj.png"
 import bh from "../assets/bh.png"
 import ke from "../assets/ke.png"
 import mh from "../assets/mh.png"
@@ -29,7 +29,20 @@ import as from "../assets/as.png"
 import ga from "../assets/ga.png"
 import ch from "../assets/ch.png"
 import pb from "../assets/pb.png"
-
+import har from "../assets/har.png"
+import hima from "../assets/hima.png"
+import jhar from "../assets/jhar.png"
+import mp from "../assets/mp.png"
+import mani from "../assets/mani.png"
+import me from "../assets/me.png"
+import mi from "../assets/mi.png"
+import sik from "../assets/sik.png"
+import tn from "../assets/tn.png"
+import tl from "../assets/tl.png"
+import tr from "../assets/tr.png"
+import up from "../assets/up.png"
+import uk from "../assets/uk.png"
+import wb from "../assets/wb.png"
 // Main Component
 const StateDashboard = () => {
     // State for selected state and theme
@@ -49,30 +62,29 @@ const StateDashboard = () => {
       { id: 4, name: "Bihar", icon: bh, code: "BR" },
       { id: 5, name: "Chhattisgarh", icon: ch, code: "CG" },
       { id: 6, name: "Goa", icon: ga, code: "GA" },
-      { id: 7, name: "Gujarat", icon: wbimg, code: "GJ" },
-      { id: 8, name: "Haryana", icon: wbimg, code: "HR" },
-      { id: 9, name: "Himachal Pradesh", icon: wbimg, code: "HP" },
-      { id: 10, name: "Jharkhand", icon: wbimg, code: "JH" },
+      { id: 7, name: "Gujarat", icon: gu, code: "GJ" },
+      { id: 8, name: "Haryana", icon: har, code: "HR" },
+      { id: 9, name: "Himachal Pradesh", icon: hima, code: "HP" },
+      { id: 10, name: "Jharkhand", icon: jhar, code: "JH" },
       { id: 11, name: "Karnataka", icon: ka, code: "KA" },
       { id: 12, name: "Kerala", icon: ke, code: "KL" },
-      { id: 13, name: "Madhya Pradesh", icon: wbimg, code: "MP" },
+      { id: 13, name: "Madhya Pradesh", icon: mp, code: "MP" },
       { id: 14, name: "Maharashtra", icon: mh, code: "MH" },
-      { id: 15, name: "Manipur", icon: wbimg, code: "MN" },
-      { id: 16, name: "Meghalaya", icon: wbimg, code: "ML" },
-      { id: 17, name: "Mizoram", icon: wbimg, code: "MZ" },
+      { id: 15, name: "Manipur", icon: mani, code: "MN" },
+      { id: 16, name: "Meghalaya", icon: me, code: "ML" },
+      { id: 17, name: "Mizoram", icon: mi, code: "MZ" },
       { id: 18, name: "Nagaland", icon: nl, code: "NL" },
       { id: 19, name: "Odisha", icon: od, code: "OD" },
       { id: 20, name: "Punjab", icon: pb, code: "PB" },
       { id: 21, name: "Rajasthan", icon: rj, code: "RJ" },
-      { id: 22, name: "Sikkim", icon: wbimg, code: "SK" },
-      { id: 23, name: "Tamil Nadu", icon: wbimg, code: "TN" },
-      { id: 24, name: "Telangana", icon: wbimg, code: "TS" },
-      { id: 25, name: "Tripura", icon: wbimg, code: "TR" },
-      { id: 26, name: "Uttar Pradesh", icon: wbimg, code: "UP" },
-      { id: 27, name: "Uttarakhand", icon: wbimg, code: "UK" },
-      { id: 28, name: "West Bengal", icon: wbimg, code: "WB" },
+      { id: 22, name: "Sikkim", icon: sik, code: "SK" },
+      { id: 23, name: "Tamil Nadu", icon: tn, code: "TN" },
+      { id: 24, name: "Telangana", icon: tl, code: "TS" },
+      { id: 25, name: "Tripura", icon: tr, code: "TR" },
+      { id: 26, name: "Uttar Pradesh", icon: up, code: "UP" },
+      { id: 27, name: "Uttarakhand", icon: uk, code: "UK" },
+      { id: 28, name: "West Bengal", icon: wb, code: "WB" },
     ];
-
 
     // Handle click on a state card
     const handleStateClick = (state) => {
