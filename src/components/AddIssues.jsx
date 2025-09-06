@@ -202,7 +202,7 @@ export default function AddIssues() {
         <div className="w-full max-w-3xl bg-slate-800 border border-slate-700/50 rounded-2xl p-6 sm:p-8">
           <form className="space-y-6">
             {/* Project Name */}
-            <div>
+            {/* <div>
               <label className="flex items-center text-slate-300 mb-2 font-medium">
                 <IdCard className='mr-2' />
                 Voter Id
@@ -215,7 +215,7 @@ export default function AddIssues() {
                 placeholder="Enter the project name..."
                 className="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow duration-300"
               />
-            </div>
+            </div> */}
 
             {/* Reporter Name */}
             <div>

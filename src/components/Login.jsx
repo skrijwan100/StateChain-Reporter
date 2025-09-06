@@ -123,13 +123,13 @@ setIsVerified(false)
         if (StateName == stateName) {
             setIsValid({
                 code: 200,
-                message: "Voter ID is valid"
+                message: "You are valid"
             });
             setlogedin(true)
         } else {
             setIsValid({
                 code: 404,
-                message: "Voter ID not found or You are not from this state"
+                message: "You are not valid"
             });
         }
 
@@ -150,15 +150,15 @@ setIsVerified(false)
 
                     <div className="container mx-auto px-6 text-center z-10 py-20">
                         <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-                            Secure Digital <span className="text-teal-400">Voting</span>
+                            Secure Issue <span className="text-teal-400">Voting</span>
                         </h1>
                         <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-12">
-                            Experience the future of democracy with our blockchain-powered voting platform. Transparent, secure, and immutable voting for the digital age.
+                            Experience the future of democracy with our blockchain-powered voting platform. Transparent, secure, and immutable Issue submit.
                         </p>
 
                         <div className="max-w-xl mx-auto bg-[#2D3748] rounded-2xl shadow-2xl p-8">
-                            <h2 className="text-2xl font-semibold mb-2">Verify Your Voter ID</h2>
-                            <p className="text-gray-400 mb-6">Enter your Voter ID to begin the secure voting process</p>
+                            <h2 className="text-2xl font-semibold mb-2">Verify Your location</h2>
+                            {/* <p className="text-gray-400 mb-6">Enter your Voter ID to begin the secure voting process</p> */}
                             <div className="space-y-6">
                                 <div className="text-left">
                                     <label htmlFor="voter-id" className="text-sm font-medium text-gray-300 mb-2 block">Voter Your location</label>
