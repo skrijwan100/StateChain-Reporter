@@ -4,12 +4,13 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import StateDashboard from './components/Home'
 import { Outlet } from 'react-router-dom'
-
+import { ToastContainer } from 'react-toastify'
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      <ToastContainer />
       <Outlet />
     </>
   )

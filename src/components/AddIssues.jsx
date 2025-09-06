@@ -1,23 +1,12 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { IdCard, MapPinHouse } from 'lucide-react';
+import { IdCard, MapPinHouse, CloudUpload, Send } from 'lucide-react';
+import { BrowserProvider, ethers } from 'ethers';
+import { handleError, handleSuccess } from './ErrorMessage';
+import issuecontract from "../contracts/Issue.sol/AllIssue.json"
+import { keccak256, toUtf8Bytes } from "ethers";
 
-
-
-const StateChainLogo = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-teal-400">
-    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="1" fill="currentColor" fillOpacity="0.2" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M16.5 9.4L12 12L7.5 9.4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M12 12V17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const WarningIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-amber-400">
-    <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line>
-  </svg>
-);
 
 const FileTextIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 mr-3">
@@ -31,31 +20,51 @@ const UploadIcon = () => (
   </svg>
 );
 
-const InfoIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
-    <circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line>
-  </svg>
-);
-
-const CloudUploadIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
-    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path>
-  </svg>
-);
 
 
 // --- Main App Component ---
 export default function AddIssues() {
   const [imagePreview, setImagePreview] = useState(null);
+  const [img, setimg] = useState()
+  const [ipfsimg, setipfsimg] = useState('')
+  const [ipfsstory, setipfsstory] = useState('')
+  const [IsSubmitting, setIsSubmitting] = useState(false)
+  const [imgloder, setImgLoder] = useState(false)
+  const [isSubmit, setisSubmit] = useState(false)
   const [detailsOfVoter, setdetailsOfVoter] = useState({
-    voterId: '',
-    state: '',
+    voterId: 'VOT123',
+    state: 'WEST BENGAL',
     issueTitle: '',
     issueStory: ''
   })
+  const { ethereum } = window;
+  useState(() => {
+    const connectwallate = async () => {
+      if (!ethereum) {
+        return alert('Install Window');
+      }
+      const account = await ethereum.request({
+        method: 'eth_requestAccounts',
+      })
+      const fulladdress = account[0]
+      const showaddress = `${fulladdress.slice(0, 4)}...${fulladdress.slice(-4)}`
+      console.log(showaddress)
+      const eth_bal = await ethereum.request({
+        method: 'eth_getBalance',
+        params: [
+          account[0], 'latest'
+        ]
+      })
+      const fullbal = ethers.formatEther(eth_bal)
+      const showbal = fullbal.slice(0, 6)
+      console.log(showbal)
 
+    }
+    connectwallate()
+  }, [])
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    setimg(e.target.files[0]);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -65,10 +74,88 @@ export default function AddIssues() {
     }
   };
 
-  const uploadDetailsToIPFS = async () => {
-    // Logic to upload details to IPFS
-    console.log("Uploading details to IPFS:", detailsOfVoter);
+  const uploadDetailsToIPFS = async (e) => {
+    e.preventDefault();
+    if (detailsOfVoter.issueStory == '' && detailsOfVoter.issueTitle == '') {
+      return handleError("Fill all the data.")
+    }
+    else {
+      setImgLoder(true)
+      const imgdata = new FormData();
+      imgdata.append("file", img)
+      const requesturl = `https://api.pinata.cloud/pinning/pinFileToIPFS`
+      try {
+        const uploadrequest = await fetch(requesturl, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: imgdata
+        })
+
+        const upload = await uploadrequest.json()
+        console.log(upload)
+        setipfsimg(upload.IpfsHash)
+      } catch (error) {
+        handleError("Some error happeend ,Try again!")
+        setImgLoder(false)
+        console.log(error)
+      }
+      const requesturlJ = `https://api.pinata.cloud/pinning/pinJSONToIPFS`
+      const body = {
+        pinataContent: { story: detailsOfVoter.issueStory }
+      };
+      try {
+        const uploadrequest = await fetch(requesturlJ, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        })
+
+        const upload = await uploadrequest.json()
+        console.log(upload)
+        setipfsstory(upload.IpfsHash)
+        if (upload) {
+          handleSuccess("Upload sucessfully")
+          setIsSubmitting(true)
+          setImgLoder(false)
+        }
+      } catch (error) {
+        handleError("Some error happeend ,Try again!")
+        setImgLoder(false)
+        console.log(error)
+      }
+    }
   }
+
+  const handlesubmit = async (e) => {
+    e.preventDefault();
+    if (!detailsOfVoter.issueTitle || !detailsOfVoter.issueStory) return handleError('Fill all the input Box');
+    setisSubmit(true)
+    const hashedId = keccak256(toUtf8Bytes(detailsOfVoter.voterId));
+    const WalletProvider = new BrowserProvider(ethereum);
+    const singer = await WalletProvider.getSigner();
+    const submitissuetnx = new ethers.Contract(
+      import.meta.env.VITE_CONTRACT_DEPOLY_ADDRESS,
+      issuecontract.abi,
+      singer
+    )
+    const issuedata = await submitissuetnx.CreateIssue(
+      detailsOfVoter.issueTitle,
+      ipfsstory,
+      ipfsimg,
+      detailsOfVoter.state,
+      hashedId
+    )
+    await issuedata.wait();
+    console.log(issuedata)
+    setisSubmit(false)
+    handleSuccess('Issue is Submited')
+  }
+
 
 
   return (
@@ -109,6 +196,7 @@ export default function AddIssues() {
               <input
                 type="text"
                 value={detailsOfVoter.voterId}
+                readOnly
                 onChange={(e) => setdetailsOfVoter({ ...detailsOfVoter, voterId: e.target.value })}
                 placeholder="Enter the project name..."
                 className="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow duration-300"
@@ -124,6 +212,7 @@ export default function AddIssues() {
               <input
                 type="text"
                 value={detailsOfVoter.state}
+                readOnly
                 onChange={(e) => setdetailsOfVoter({ ...detailsOfVoter, state: e.target.value })}
                 placeholder="Enter your name or identifier..."
                 className="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow duration-300"
@@ -184,14 +273,26 @@ export default function AddIssues() {
             </div>
 
             {/* Upload Button */}
-            <button
-              onClick={uploadDetailsToIPFS}
-              type="button"
-              className="w-full flex items-center cursor-pointer justify-center gap-2 bg-teal-500 text-white font-semibold py-3 rounded-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-teal-500 transition-all duration-300"
-            >
-              <CloudUploadIcon />
-              Upload image in IPFS
-            </button>
+            {IsSubmitting ?
+              <button type="button"
+                onClick={handlesubmit}
+                className="w-full flex items-center cursor-pointer justify-center gap-2 bg-teal-500 text-white font-semibold py-3 rounded-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-teal-500 transition-all duration-300">
+                {isSubmit ? <div className='flex'><div className="animate-spin rounded-full h-4 w-4 mt-1 mr-2 border-b-2 border-white"></div><span>Submiting...</span></div> : <div className='flex'>
+                  <Send className='mr-2' />
+                  Submit Issue
+                </div>}
+              </button>
+
+              : <button
+                onClick={uploadDetailsToIPFS}
+                type="button"
+                className="w-full flex items-center cursor-pointer justify-center gap-2 bg-teal-500 text-white font-semibold py-3 rounded-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-teal-500 transition-all duration-300"
+              >
+                {imgloder ? <div className='flex'><div className="animate-spin rounded-full h-4 w-4 mt-1 mr-2 border-b-2 border-white"></div><span>Uploding...</span></div> : <div className='flex'>
+                  <CloudUpload className='mr-2' />
+                  Upload image in IPFS</div>}
+
+              </button>}
           </form>
         </div>
 
