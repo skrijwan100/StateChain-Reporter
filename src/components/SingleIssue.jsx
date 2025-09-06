@@ -185,6 +185,14 @@ const ReportDetails = () => {
         setdTnxload(false)
         setreload(true)
     }
+    useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
     return (
         <main className="max-w-screen-xl mx-auto px-6 py-8 text-gray-300">
             {lodedata ? <div className='w-full h-[85vh] flex justify-center items-center '><div className='bigloder'></div></div> : <div>

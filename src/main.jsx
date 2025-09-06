@@ -11,6 +11,8 @@ import SingleIssue from './components/SingleIssue.jsx'
 import VerifyContextProvider from './contexts/verifyContext.jsx'
 import IssuesPage from './components/IssuesPage.jsx'
 import LocationStateFinder from './components/Lo.jsx'
+import CompanySlide from './components/CompanySlide.jsx'
+import Analytics from './components/Analytics.jsx'
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
       {
         path : "/lo",
         element : <LocationStateFinder/>
+      },
+      {
+        path : "/analytics",
+        element : <Analytics />
       }
     ]
   }

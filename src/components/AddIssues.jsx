@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { IdCard, MapPinHouse, CloudUpload, Send } from 'lucide-react';
@@ -139,6 +139,15 @@ export default function AddIssues() {
       }
     }
   }
+
+    useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
 
   const handlesubmit = async (e) => {
     e.preventDefault();
