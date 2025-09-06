@@ -139,7 +139,7 @@ const StateDashboard = () => {
                                     </div>
                                     
                                     {/* State Info */}
-                                    <div className="text-center">
+                                    <div className="text-center flex items-center flex-col">
                                         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">
                                             {state.name}
                                         </h3>
