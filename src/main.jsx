@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"
 import App from './App.jsx'
+import StateDashboard from './components/Home.jsx'
 
 const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
     children : [
       {
         path: "/",
-        element : <div>Home</div>
+        element : <StateDashboard />
       },
       {
         path : "/issues",
