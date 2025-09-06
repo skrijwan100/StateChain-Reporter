@@ -1,5 +1,6 @@
 import { Zap } from 'lucide-react'
 import React from 'react'
+import logo from "../assets/logo.png"
 
 const Footer = () => {
     return (
@@ -7,7 +8,9 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                        <Zap className="w-6 h-6 text-teal-400" />
+                        <div className='h-8 w-8'>
+                            <img src={logo} alt="StateChain Reporter Logo" className="h-full w-full object-contain" />
+                        </div>
                         <span className="font-semibold">StateChain Reporter</span>
                         <span className="text-sm text-gray-300 dark:text-gray-400">v2.0</span>
                     </div>

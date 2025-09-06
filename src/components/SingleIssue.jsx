@@ -1,95 +1,206 @@
-import { AlertTriangle, ImageIcon } from 'lucide-react';
-import React from 'react'
+import React from 'react';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
-const SingleIssue = () => {
-    const voters = [
-        { address: "0x44F4...6CCf", time: "8/8/2025, 2:40:12 AM", status: "Agree" },
-        { address: "0xe95a...117d", time: "8/8/2025, 2:43:24 AM", status: "Disagree" },
-        { address: "0x7711...E5dc", time: "8/8/2025, 5:26:00 PM", status: "Agree" },
-    ];
+// --- Helper Data ---
+const agreeData = [
+  { address: '0xa44F4...6CCf', date: '8/8/2025, 2:40:12 AM' },
+  { address: '0x7711...E5dc', date: '8/8/2025, 5:26:00 PM' },
+  { address: '0xb2dE...9aB1', date: '8/9/2025, 10:15:30 AM' },
+];
+
+const disagreeData = [
+  { address: '0xe695a...117d', date: '8/8/2025, 2:43:24 AM' },
+];
+
+
+// --- SVG Icons ---
+// Using functional components for SVG icons for easy customization
+const AlertTriangleIcon = ({ className = "w-6 h-6" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+    <path d="M12 9v4"></path><path d="M12 17h.01"></path>
+  </svg>
+);
+
+const UserIcon = ({ className = "w-5 h-5" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+);
+
+const PhoneIcon = ({ className = "w-5 h-5" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+);
+
+const ImageIcon = ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+        <circle cx="9" cy="9" r="2"></circle>
+        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+    </svg>
+);
+
+const ListIcon = ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <line x1="8" x2="21" y1="6" y2="6"></line>
+        <line x1="8" x2="21" y1="12" y2="12"></line>
+        <line x1="8" x2="21" y1="18" y2="18"></line>
+        <line x1="3" x2="3.01" y1="6" y2="6"></line>
+        <line x1="3" x2="3.01" y1="12" y2="12"></line>
+        <line x1="3" x2="3.01" y1="18" y2="18"></line>
+    </svg>
+);
+
+const LogoIcon = ({ className = "w-8 h-8" }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7l10 5 10 5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+const GlobeIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+);
+
+const ZapIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+);
+
+const LockIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+);
+
+const ShieldIcon = ({ className = "w-5 h-5" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </svg>
+);
+
+// --- Reusable Components ---
+const InfoCard = ({ children }) => (
+    <div className="bg-[#161b22] border border-gray-800 rounded-lg p-6 mb-8">
+        {children}
+    </div>
+);
+
+const CardTitle = ({ icon, text }) => (
+    <div className="flex items-center text-xl font-semibold text-gray-200 mb-4">
+        {icon}
+        <h2 className="ml-3">{text}</h2>
+    </div>
+);
+
+const ReportDetails = () => {
     return (
-        <div className="min-h-screen bg-gray-900 flex justify-center p-6">
-            <div className="w-full max-w-3xl space-y-6">
-                {/* Report Header Card */}
-                <div className="bg-slate-800 rounded-2xl shadow-lg p-6">
-                    <div className="flex items-center space-x-3">
-                        <AlertTriangle className="w-6 h-6 text-teal-500" />
-                        <h2 className="text-xl font-semibold text-white">
-                            Staff behavior is not good
-                        </h2>
+        <main className="max-w-screen-xl mx-auto px-6 py-8 text-gray-300">
+            {/* --- Top Section --- */}
+            <InfoCard>
+                <div className="flex items-start mb-4">
+                    <AlertTriangleIcon className="w-7 h-7 text-teal-400 mt-1"/>
+                    <h1 className="ml-3 text-2xl md:text-3xl font-bold text-white">Staff behavior is not good</h1>
+                </div>
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-400">
+                    <div className="flex items-center">
+                        <UserIcon className="mr-2"/>
+                        <span>0x44L..6CC1</span>
                     </div>
-                    <div className="mt-4 text-sm text-gray-400">
-                        <p>👤 0x44...6CCf</p>
-                        <p>⏱ 1757155093133</p>
-                        <p>ID: 0x83e6D9AaFcD3BD92842d9D8D5F887DC97B0688b8</p>
+                    <div className="flex items-center">
+                        <PhoneIcon className="mr-2"/>
+                        <span>1757155093133</span>
                     </div>
                 </div>
-
-                {/* Description Card */}
-                <div className="bg-slate-800 rounded-2xl shadow-lg p-6">
-                    <h3 className="text-lg font-semibold text-white mb-2">Description</h3>
-                    <p className="text-sm leading-relaxed text-gray-400">
-                        Female college staff includes teaching faculty and non-teaching administrative
-                        and support staff. Examples of teaching staff include professors, lecturers,
-                        and teaching assistants, while non-teaching staff can include administrators,
-                        librarians, lab assistants, and other support personnel. In the context of
-                        Women's College, Calcutta, there are several female faculty members across
-                        different departments like Bengali, Philosophy, Education, and more, as well as
-                        non-teaching staff like librarians and administrative assistants.
-                    </p>
+                <div className="mt-4 text-xs bg-gray-900/70 p-2 rounded-md inline-block font-mono">
+                   ID: 0x6d3e6094af...d38092842d5908b5f8870f3789b88b8
                 </div>
+            </InfoCard>
 
-                {/* Attached Image Card */}
-                <div className="bg-slate-800 rounded-2xl shadow-lg p-6">
-                    <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                        <ImageIcon className="w-5 h-5 text-teal-500" /> Attached Image
-                    </h3>
-                    <img
-                        src="/madara.jpg"
-                        alt="Attached"
-                        className="rounded-xl shadow-lg max-h-72 object-cover"
+            {/* --- Description Section --- */}
+            <InfoCard>
+                <CardTitle text="Description" />
+                <p className="text-gray-400 leading-relaxed">
+                    Female college staff includes teaching faculty and non-teaching administrative and support staff. Examples of teaching staff include professors, lecturers, and teaching assistants, while non-teaching staff can include administrators, librarians, lab assistants, and other support personnel. In the context of Women's College, Calcutta, there are several female faculty members across different departments like Bengali, Philosophy, Education, and more, as well as non-teaching staff like librarians and administrative assistants.
+                </p>
+            </InfoCard>
+
+            {/* --- Attached Image Section --- */}
+            <InfoCard>
+                <CardTitle icon={<ImageIcon />} text="Attached Image" />
+                <div className="overflow-hidden rounded-lg w-full h-[20rem]">
+                    <img 
+                      src="https://www.tarapadagarai.site/assets/TARAPADA-DQQzy6pt.jpeg" 
+                      alt="Report evidence" 
+                      className="w-full h-full object-contain"
                     />
                 </div>
+            </InfoCard>
 
-                {/* Community Voting Section */}
-                <div className="bg-slate-800 rounded-2xl shadow-lg p-6 text-center">
-                    <h3 className="text-lg font-semibold text-white">Community Voting</h3>
-                    <p className="text-teal-500 font-semibold mt-2">
-                        You already done your vote
-                    </p>
-                    <p className="text-sm text-gray-400 mt-1">Total Votes: {voters.length}</p>
+            {/* --- Community Voting Section --- */}
+            <InfoCard>
+                <CardTitle text="Community Voting" />
+                <div className="text-center">
+                    <p className="text-xl font-bold text-green-400 mb-2">You already done your vote</p>
+                    <p className="text-gray-400 mb-6">Total Votes: {agreeData.length + disagreeData.length}</p>
+                    <div className="flex justify-center gap-4">
+                        <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                            Agree
+                        </button>
+                        <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                            Disagree
+                        </button>
+                    </div>
                 </div>
-
-                {/* Addresses Card */}
-                <div className="bg-slate-800 rounded-2xl shadow-lg p-6">
-                    <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                        <h2 className="w-5 h-5 text-teal-500" /> Addresses that Agree and Disagree
-                    </h3>
+            </InfoCard>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+                {/* --- Agree Section --- */}
+                <InfoCard>
+                    <CardTitle icon={<ListIcon />} text="Addresses that Agree" />
                     <div className="space-y-3">
-                        {voters.map((voter, idx) => (
-                            <div
-                                key={idx}
-                                className="flex justify-between items-center bg-slate-900 p-3 rounded-xl"
-                            >
-                                <div>
-                                    <p className="text-sm text-white">{voter.address}</p>
-                                    <p className="text-xs text-gray-400">{voter.time}</p>
+                        {agreeData.map((item, index) => (
+                            <div key={index} className="flex flex-wrap justify-between items-center bg-gray-900/70 p-3 rounded-md">
+                                <span className="font-mono text-sm text-teal-400 mr-4">{item.address}</span>
+                                <div className="flex items-center gap-4">
+                                  <span className="text-xs text-gray-500">{item.date}</span>
+                                  <span className="text-xs font-bold bg-green-500/20 text-green-400 py-1 px-3 rounded-full">Agree</span>
                                 </div>
-                                <span
-                                    className={`${voter.status === "Agree"
-                                        ? "bg-teal-500"
-                                        : "bg-red-600"
-                                        } text-white text-sm px-3 py-1 rounded-lg shadow`}
-                                >
-                                    {voter.status}
-                                </span>
                             </div>
                         ))}
                     </div>
-                </div>
-            </div>
-        </div>
-    )
-}
+                </InfoCard>
 
-export default SingleIssue
+                {/* --- Disagree Section --- */}
+                <InfoCard>
+                    <CardTitle icon={<ListIcon />} text="Addresses that Disagree" />
+                    <div className="space-y-3">
+                        {disagreeData.map((item, index) => (
+                            <div key={index} className="flex flex-wrap justify-between items-center bg-gray-900/70 p-3 rounded-md">
+                                <span className="font-mono text-sm text-teal-400 mr-4">{item.address}</span>
+                                <div className="flex items-center gap-4">
+                                  <span className="text-xs text-gray-500">{item.date}</span>
+                                  <span className="text-xs font-bold bg-red-500/20 text-red-400 py-1 px-3 rounded-full">Disagree</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </InfoCard>
+            </div>
+
+
+        </main>
+    );
+};
+
+// The main App component that ties everything together.
+export default function SingleIssue() {
+  return (
+    // The main container with a dark gradient background.
+    <div className="min-h-screen bg-[#0d1117] font-sans text-gray-300">
+      <Navbar />
+      <ReportDetails />
+      <Footer />
+    </div>
+  );
+}
