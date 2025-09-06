@@ -138,6 +138,14 @@ setIsVerified(false)
             setIsValid(false);
         }, 3000);
     }
+    useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
     return (
         <div className="min-h-screen bg-[#1A202C] font-sans">
             <Navbar />

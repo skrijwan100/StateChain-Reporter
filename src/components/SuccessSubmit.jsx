@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { Link } from 'react-router';
@@ -132,6 +132,14 @@ function SuccessContent({Tnxhash,issueId}) {
 
 
 export default function SuccessSubmit({Tnxhash,issueId}) {
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1f36] to-[#2c234b]">
       <Navbar />

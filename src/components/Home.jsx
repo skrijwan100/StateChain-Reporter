@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Building,
     Mountain,
@@ -92,6 +92,15 @@ const StateDashboard = () => {
       { id: 27, name: "Uttarakhand", icon: uk, code: "UK" },
       { id: 28, name: "West Bengal", icon: wb, code: "WB" },
     ];
+
+    useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
 
     // Handle click on a state card
     const handleStateClick = (state) => {

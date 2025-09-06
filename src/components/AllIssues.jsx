@@ -124,6 +124,14 @@ export default function AllIssues() {
         }
         fecthblockdata()
     }, [])
+    useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
     return (
         <div className="bg-gray-900 text-gray-300 font-sans">
             <div className="flex flex-col min-h-screen">
