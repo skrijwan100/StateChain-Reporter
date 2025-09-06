@@ -34,11 +34,23 @@ function Login() {
     const [isValid, setIsValid] = useState(false);
 
     const checkVoterId = () => {
-        const voter = voters.find(v => v.id === voterId);
-        if (voter) {
-            setIsValid(200);
+        if (!voterId.trim()) {
+            setIsValid({
+                code: 400, message: "Voter ID cannot be empty"
+            });
         } else {
-            setIsValid(404);
+            const voter = voters.find(v => v.id === voterId);
+            if (voter) {
+                setIsValid({
+                    code: 200,
+                    message: "Voter ID is valid"
+                });
+            } else {
+                setIsValid({
+                    code: 404,
+                    message: "Voter ID not found"
+                });
+            }
         }
 
         setTimeout(() => {
@@ -80,21 +92,21 @@ function Login() {
                                 </div>
                                 {isValid && (
                                     <div className="transition-opacity duration-300">
-                                        {isValid === 404 ? (
-                                            // Error Message UI
-                                            <div className="flex items-center p-3 text-sm text-white rounded-lg bg-red-500 bg-opacity-10 border border-red-400" role="alert">
-                                                <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                                                </svg>
-                                                <span className="font-medium">Verification Failed!</span>&nbsp;Invalid Voter ID. Please check and try again.
-                                            </div>
-                                        ) : isValid === 200 && (
+                                        {isValid.code === 200 ? (
                                             // Success Message UI
                                             <div className="flex items-center p-3 text-sm text-white rounded-lg bg-green-500 bg-opacity-10 border border-green-400" role="alert">
                                                 <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                                                 </svg>
-                                                <span className="font-medium">Success!</span>&nbsp;Voter ID has been verified.
+                                                <span className="font-medium">Success!</span>&nbsp;{isValid.message}
+                                            </div>
+                                        ) : (
+                                            // Error Message UI (handles both 400 and 404 codes)
+                                            <div className="flex items-center p-3 text-sm text-white rounded-lg bg-red-500 bg-opacity-10 border border-red-400" role="alert">
+                                                <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                                                </svg>
+                                                <span className="font-medium">Verification Failed!</span>&nbsp;{isValid.message}
                                             </div>
                                         )}
                                     </div>
