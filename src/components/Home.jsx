@@ -45,6 +45,7 @@ import uk from "../assets/uk.png"
 import wb from "../assets/wb.png"
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { useNavigate } from 'react-router-dom';
 
 // Main Component
 const StateDashboard = () => {
@@ -56,6 +57,8 @@ const StateDashboard = () => {
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
     };
+
+    const navigate = useNavigate();
 
     // Indian States data with theme-aware icons
     const states = [
@@ -148,12 +151,12 @@ const StateDashboard = () => {
                                         </p>
                                         
                                         {/* Action Button */}
-                                        <div className="inline-flex items-center px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 transition-colors">
+                                        <div onClick={() => navigate(`/allIssues/${state.name}`)} className="inline-flex items-center px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 transition-colors">
                                             <Flag className="w-4 h-4 mr-2" />
                                             All Issue
                                         </div>
 
-                                        <div className="inline-flex items-center mt-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 transition-colors">
+                                        <div onClick={() => navigate(`/issues/${state.name}`)} className="inline-flex items-center mt-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 transition-colors">
                                             <Flag className="w-4 h-4 mr-2" />
                                             Report Issue
                                         </div>
