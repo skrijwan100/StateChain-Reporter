@@ -4,6 +4,7 @@ import './index.css'
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom"
 import App from './App.jsx'
 import StateDashboard from './components/Home.jsx'
+import AddIssues from './components/AddIssues.jsx'
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
       },
       {
         path : "/issues",
-        element : <div>Issues</div>
+        element : <AddIssues />
       },
       {
         path : "/allIssues",
