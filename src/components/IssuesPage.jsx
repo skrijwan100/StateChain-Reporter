@@ -4,7 +4,7 @@ import Login from './Login'
 import AddIssues from './AddIssues'
 
 const IssuesPage = () => {
-    const [isVerified, setIsVerified] = useVerify()
+    const [isVerified, setIsVerified] = useVerify(true)
     if(isVerified){
         return <Login />
     }

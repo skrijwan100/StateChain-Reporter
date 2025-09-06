@@ -9,6 +9,7 @@ import { keccak256, toUtf8Bytes } from "ethers";
 import SuccessPage from './suc';
 import Login from './Login.jsx'
 import { useVerify } from '../contexts/verifyContext';
+import { useParams } from 'react-router';
 
 
 const FileTextIcon = () => (
@@ -35,13 +36,14 @@ export default function AddIssues() {
   const [IsSubmitting, setIsSubmitting] = useState(false)
   const [imgloder, setImgLoder] = useState(false)
   const [isSubmit, setisSubmit] = useState(false)
+  const { stateName } = useParams()
   const [detailsOfVoter, setdetailsOfVoter] = useState({
     voterId: 'VOT123',
-    state: 'WEST BENGAL',
+    state: stateName,
     issueTitle: '',
     issueStory: ''
   })
-  const [lodscpage,setlodscpage]=useState(true)
+  const [lodscpage,setlodscpage]=useState(false)
   const { ethereum } = window;
   useState(() => {
     const connectwallate = async () => {
@@ -162,7 +164,7 @@ export default function AddIssues() {
   }
   if(lodscpage){
     return(
-      <Login/>
+      <SuccessPage/>
     )
   }
   return (

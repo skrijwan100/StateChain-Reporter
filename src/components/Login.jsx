@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { voters } from "../constants/voterData.js"
 import { useVerify } from '../contexts/verifyContext.jsx';
+import { useNavigate, useParams } from 'react-router';
+import { ethers } from 'ethers';
+import { keccak256, toUtf8Bytes } from "ethers";
+import issuecontartc from "../contracts/Issue.sol/AllIssue.json"
 
 const ShieldIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-teal-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
@@ -34,26 +38,101 @@ function Login() {
     const [voterId, setVoterId] = useState("");
     const [isValid, setIsValid] = useState(false);
     const [isVerified, setIsVerified] = useVerify();
+    const [Chakecalid, setChakecalid] = useState(false)
+    const { stateName } = useParams()
+    const [votedata, setvotedata] = useState([])
+    const [StateName, setStateName] = useState(null);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [logedin,setlogedin]=useState(false)
+    const naviget=useNavigate()
+    const chakIDvalid = async () => {
+        const hashed = keccak256(toUtf8Bytes(voterId));
+        console.log(hashed)
+        const infuraprovider = new ethers.JsonRpcProvider(
+            import.meta.env.VITE_INFURA_URL
+        )
+        const allvotercontract = new ethers.Contract(
+            import.meta.env.VITE_CONTRACT_DEPOLY_ADDRESS,
+            issuecontartc.abi,
+            infuraprovider
+        )
+        const contractview = await allvotercontract.filters.saveIssue(null, null, null, null, hashed);
+        const showevent = await allvotercontract.queryFilter(contractview);
+        console.log(showevent)
+        setvotedata(showevent);
 
-    const checkVoterId = () => {
-        if (!voterId.trim()) {
-            setIsValid({
-                code: 400, message: "Voter ID cannot be empty"
-            });
-        } else {
-            const voter = voters.find(v => v.id === voterId);
-            if (voter) {
-                setIsValid({
-                    code: 200,
-                    message: "Voter ID is valid"
-                });
-            } else {
-                setIsValid({
-                    code: 404,
-                    message: "Voter ID not found"
-                });
-            }
+    }
+    const loginuser=()=>{
+setIsVerified(false)
+    }
+    const getCurrentLocation = () => {
+        setLoading(true);
+        setError(null);
+        setStateName(null);
+
+        if (!navigator.geolocation) {
+            setError("Geolocation is not supported by your browser");
+            setLoading(false);
+            return;
         }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                fetchStateFromCoordinates(latitude, longitude);
+            },
+            (err) => {
+                setError("Permission denied or unable to retrieve location.");
+                setLoading(false);
+            }
+        );
+    };
+    const fetchStateFromCoordinates = async (lat, lng) => {
+        try {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+            const response = await fetch(url, {
+                headers: {
+                    'User-Agent': 'location-state-finder-app',
+                    'Accept-Language': 'en',
+                },
+            });
+            const data = await response.json();
+
+            if (data && data.address) {
+                const state = data.address.state || data.address.region || null;
+                if (state) {
+                    setStateName(state);
+                    setChakecalid(true)
+                } else {
+                    setError("State information not found at this location.");
+                }
+            } else {
+                setError("Failed to fetch location info.");
+            }
+        } catch (err) {
+            setError("Error fetching location info.");
+        }
+        setLoading(false);
+    };
+    const checkVoterId = () => {
+
+        // const voter = voters.filter(v => v.id === voterId);
+        // console.log(voter[0].state)
+        if (StateName == stateName) {
+            setIsValid({
+                code: 200,
+                message: "Voter ID is valid"
+            });
+            setlogedin(true)
+        } else {
+            setIsValid({
+                code: 404,
+                message: "Voter ID not found or You are not from this state"
+            });
+        }
+
 
         setTimeout(() => {
             setIsValid(false);
@@ -82,13 +161,14 @@ function Login() {
                             <p className="text-gray-400 mb-6">Enter your Voter ID to begin the secure voting process</p>
                             <div className="space-y-6">
                                 <div className="text-left">
-                                    <label htmlFor="voter-id" className="text-sm font-medium text-gray-300 mb-2 block">Voter ID Number</label>
+                                    <label htmlFor="voter-id" className="text-sm font-medium text-gray-300 mb-2 block">Voter Your location</label>
                                     <input
-                                        value={voterId}
+                                        readOnly
+                                        value={StateName}
                                         onChange={(e) => setVoterId(e.target.value)}
                                         id="voter-id"
                                         type="text"
-                                        placeholder="Enter your voter ID (e.g., VID123456789)"
+                                        placeholder="Fecth your location"
                                         className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
                                     />
                                 </div>
@@ -113,9 +193,20 @@ function Login() {
                                         )}
                                     </div>
                                 )}
-                                <button onClick={checkVoterId} className="w-full cursor-pointer bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 shadow-lg transform hover:scale-105">
-                                    Verify Voter ID &gt;
-                                </button>
+                                {logedin?<div onClick={loginuser} className="w-full cursor-pointer bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 shadow-lg transform hover:scale-105 flex items-center justify-center">Loging</div>:<div className=" flex flex-col items-center justify-center p-4">
+                                    {Chakecalid ?
+                                        <button
+                                            onClick={checkVoterId}
+                                            className="w-full cursor-pointer bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 shadow-lg transform hover:scale-105 flex items-center justify-center"
+                                        >Macth the state
+                                        </button>
+                                        : <button
+                                            onClick={getCurrentLocation}
+                                            className="w-full cursor-pointer bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 shadow-lg transform hover:scale-105 flex items-center justify-center"
+                                        >
+                                            {loading ? <div className='flex'><div className="animate-spin rounded-full h-4 w-4 mt-1 mr-2 border-b-2 border-white"></div><span>fecthing...</span></div> : 'Get Current State'}
+                                        </button>}
+                                </div>}
                             </div>
                         </div>
                     </div>

@@ -12,7 +12,7 @@ const Navbar = () => {
                         <h1 className="text-xl font-bold">StateChain Reporter</h1>
                     </div>
                     <div className="hidden md:flex items-center space-x-6">
-                        <NavLink to="/dashboard" className="hover:text-teal-300 transition-colors">Dashboard</NavLink>
+                        <NavLink to="/" className="hover:text-teal-300 transition-colors">Home</NavLink>
                         <NavLink to="/reports" className="hover:text-teal-300 transition-colors">Reports</NavLink>
                         <NavLink to="/analytics" className="hover:text-teal-300 transition-colors">Analytics</NavLink>
                         <NavLink to="/profile" className="hover:text-teal-300 transition-colors">Profile</NavLink>
