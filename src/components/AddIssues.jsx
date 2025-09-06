@@ -155,9 +155,6 @@ export default function AddIssues() {
     setisSubmit(false)
     handleSuccess('Issue is Submited')
   }
-
-
-
   return (
     <div className="min-h-screen w-full bg-slate-900 text-white font-sans antialiased">
 
