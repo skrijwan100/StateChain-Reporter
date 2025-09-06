@@ -216,7 +216,9 @@ const ReportDetails = () => {
                             alt="Report evidence"
                             className="w-full h-full object-contain"
                         />
+                        
                     </div>
+                    <p className='text-center'><span className='text-2xl font-bold'>Location:</span> <a target='_blank' href="https://www.google.com/maps/@22.6555723,88.3003535"><span className='text-teal-500'>https://www.google.com/maps/@22.6555723,88.3003535</span></a></p>
                 </InfoCard>
 
                 {/* --- Community Voting Section --- */}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Building,
     Mountain,
@@ -47,13 +47,36 @@ import wb from "../assets/wb.png"
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { useNavigate } from 'react-router-dom';
-
+import issuecontract from "../contracts/Issue.sol/AllIssue.json"
+import { ethers } from 'ethers';
 // Main Component
 const StateDashboard = () => {
     // State for selected state and theme
     const [selectedState, setSelectedState] = useState(null);
+    const [allissue,setallissue]=useState([])
+    const [loder,setloder]=useState(false)
     const [theme, setTheme] = useState('light'); // 'light' or 'dark'
+    useEffect(() => {
+        const fecthallvotedata = async () => {
+            setloder(true)
+            const infuraProvider = new ethers.JsonRpcProvider(
+                import.meta.env.VITE_INFURA_URL
+            )
+            const issuecontratcget = new ethers.Contract(
+                import.meta.env.VITE_CONTRACT_DEPOLY_ADDRESS,
+                issuecontract.abi,
+                infuraProvider
+            )
+            const depocontract = await issuecontratcget.filters.saveIssue()
+            const event = await issuecontratcget.queryFilter(depocontract)
+            setallissue(event)
+            setloder(false)
 
+
+        }
+
+fecthallvotedata()
+    }, [])
     // Function to toggle theme
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
@@ -63,34 +86,34 @@ const StateDashboard = () => {
 
     // Indian States data with theme-aware icons
     const states = [
-      { id: 1, name: "Andhra Pradesh", icon: ap, code: "AP" },
-      { id: 2, name: "Arunachal Pradesh", icon: ar, code: "AR" },
-      { id: 3, name: "Assam", icon: as, code: "AS" },
-      { id: 4, name: "Bihar", icon: bh, code: "BR" },
-      { id: 5, name: "Chhattisgarh", icon: ch, code: "CG" },
-      { id: 6, name: "Goa", icon: ga, code: "GA" },
-      { id: 7, name: "Gujarat", icon: gu, code: "GJ" },
-      { id: 8, name: "Haryana", icon: har, code: "HR" },
-      { id: 9, name: "Himachal Pradesh", icon: hima, code: "HP" },
-      { id: 10, name: "Jharkhand", icon: jhar, code: "JH" },
-      { id: 11, name: "Karnataka", icon: ka, code: "KA" },
-      { id: 12, name: "Kerala", icon: ke, code: "KL" },
-      { id: 13, name: "Madhya Pradesh", icon: mp, code: "MP" },
-      { id: 14, name: "Maharashtra", icon: mh, code: "MH" },
-      { id: 15, name: "Manipur", icon: mani, code: "MN" },
-      { id: 16, name: "Meghalaya", icon: me, code: "ML" },
-      { id: 17, name: "Mizoram", icon: mi, code: "MZ" },
-      { id: 18, name: "Nagaland", icon: nl, code: "NL" },
-      { id: 19, name: "Odisha", icon: od, code: "OD" },
-      { id: 20, name: "Punjab", icon: pb, code: "PB" },
-      { id: 21, name: "Rajasthan", icon: rj, code: "RJ" },
-      { id: 22, name: "Sikkim", icon: sik, code: "SK" },
-      { id: 23, name: "Tamil Nadu", icon: tn, code: "TN" },
-      { id: 24, name: "Telangana", icon: tl, code: "TS" },
-      { id: 25, name: "Tripura", icon: tr, code: "TR" },
-      { id: 26, name: "Uttar Pradesh", icon: up, code: "UP" },
-      { id: 27, name: "Uttarakhand", icon: uk, code: "UK" },
-      { id: 28, name: "West Bengal", icon: wb, code: "WB" },
+        { id: 1, name: "Andhra Pradesh", icon: ap, code: "AP" },
+        { id: 2, name: "Arunachal Pradesh", icon: ar, code: "AR" },
+        { id: 3, name: "Assam", icon: as, code: "AS" },
+        { id: 4, name: "Bihar", icon: bh, code: "BR" },
+        { id: 5, name: "Chhattisgarh", icon: ch, code: "CG" },
+        { id: 6, name: "Goa", icon: ga, code: "GA" },
+        { id: 7, name: "Gujarat", icon: gu, code: "GJ" },
+        { id: 8, name: "Haryana", icon: har, code: "HR" },
+        { id: 9, name: "Himachal Pradesh", icon: hima, code: "HP" },
+        { id: 10, name: "Jharkhand", icon: jhar, code: "JH" },
+        { id: 11, name: "Karnataka", icon: ka, code: "KA" },
+        { id: 12, name: "Kerala", icon: ke, code: "KL" },
+        { id: 13, name: "Madhya Pradesh", icon: mp, code: "MP" },
+        { id: 14, name: "Maharashtra", icon: mh, code: "MH" },
+        { id: 15, name: "Manipur", icon: mani, code: "MN" },
+        { id: 16, name: "Meghalaya", icon: me, code: "ML" },
+        { id: 17, name: "Mizoram", icon: mi, code: "MZ" },
+        { id: 18, name: "Nagaland", icon: nl, code: "NL" },
+        { id: 19, name: "Odisha", icon: od, code: "OD" },
+        { id: 20, name: "Punjab", icon: pb, code: "PB" },
+        { id: 21, name: "Rajasthan", icon: rj, code: "RJ" },
+        { id: 22, name: "Sikkim", icon: sik, code: "SK" },
+        { id: 23, name: "Tamil Nadu", icon: tn, code: "TN" },
+        { id: 24, name: "Telangana", icon: tl, code: "TS" },
+        { id: 25, name: "Tripura", icon: tr, code: "TR" },
+        { id: 26, name: "Uttar Pradesh", icon: up, code: "UP" },
+        { id: 27, name: "Uttarakhand", icon: uk, code: "UK" },
+        { id: 28, name: "West Bengal", icon: wb, code: "WB" },
     ];
 
     // Handle click on a state card
@@ -139,9 +162,9 @@ const StateDashboard = () => {
                                 <div className="py-6 px-4">
                                     {/* State Icon */}
                                     <div className="flex justify-center mb-4">
-                                       <img src={state.icon} className='w-full h-full object-contain' alt="" srcset="" />
+                                        <img src={state.icon} className='w-full h-full object-contain' alt="" srcset="" />
                                     </div>
-                                    
+
                                     {/* State Info */}
                                     <div className="text-center flex items-center flex-col">
                                         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">
@@ -150,7 +173,7 @@ const StateDashboard = () => {
                                         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 font-mono">
                                             {state.code}
                                         </p>
-                                        
+
                                         {/* Action Button */}
                                         <div onClick={() => navigate(`/allIssues/${state.name}`)} className="inline-flex items-center px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 hover:bg-teal-500 transition-colors">
                                             <Flag className="w-4 h-4 mr-2" />
@@ -165,7 +188,7 @@ const StateDashboard = () => {
 
                                     </div>
                                 </div>
-                                
+
                                 {/* Bottom accent */}
                                 {/* <div className="h-1 bg-gradient-to-r from-teal-400 to-teal-600 rounded-b-xl opacity-0 group-hover:opacity-100 transition-opacity"></div> */}
                             </div>
@@ -185,19 +208,19 @@ const StateDashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        
-                        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+
+                        {loder?'':<div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 border-l-4 border-blue-500">
                             <div className="flex items-center">
                                 <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
                                     <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div className="ml-4">
                                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Reports</p>
-                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">342</p>
+                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{allissue.length}</p>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>}
+
                         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 border-l-4 border-green-500">
                             <div className="flex items-center">
                                 <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg">
@@ -205,7 +228,7 @@ const StateDashboard = () => {
                                 </div>
                                 <div className="ml-4">
                                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Resolved Issues</p>
-                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">1,847</p>
+                                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">0</p>
                                 </div>
                             </div>
                         </div>
