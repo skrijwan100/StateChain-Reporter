@@ -6,6 +6,10 @@ import App from './App.jsx'
 import StateDashboard from './components/Home.jsx'
 import AddIssues from './components/AddIssues.jsx'
 import Login from './components/Login.jsx'
+import AllIssues from './components/AllIssues.jsx'
+import SingleIssue from './components/SingleIssue.jsx'
+import VerifyContextProvider from './contexts/verifyContext.jsx'
+import IssuesPage from './components/IssuesPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -18,17 +22,16 @@ const router = createBrowserRouter([
         element : <StateDashboard />
       },
       {
-        path : "/issues",
-        element : <AddIssues />
-        // element : <Login />
+        path : "/issues/:stateName",
+        element : <IssuesPage />
       },
       {
-        path : "/allIssues",
-        element : <div>All Issues</div>
+        path : "/allIssues/:stateName",
+        element : <AllIssues />
       },
       {
-        path : "/allIssues/:id",
-        element : <div>id</div>
+        path : "/allIssues/:stateName/:id",
+        element : <SingleIssue />
       }
     ]
   }
@@ -36,6 +39,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <VerifyContextProvider>
+      <RouterProvider router={router} />
+    </VerifyContextProvider>
   </StrictMode>
 )
