@@ -6,6 +6,7 @@ import { BrowserProvider, ethers } from 'ethers';
 import { handleError, handleSuccess } from './ErrorMessage';
 import issuecontract from "../contracts/Issue.sol/AllIssue.json"
 import { keccak256, toUtf8Bytes } from "ethers";
+import { useVerify } from '../contexts/verifyContext';
 
 
 const FileTextIcon = () => (
@@ -24,6 +25,7 @@ const UploadIcon = () => (
 
 // --- Main App Component ---
 export default function AddIssues() {
+  const [isVerified, setIsVerified] = useVerify();
   const [imagePreview, setImagePreview] = useState(null);
   const [img, setimg] = useState()
   const [ipfsimg, setipfsimg] = useState('')
