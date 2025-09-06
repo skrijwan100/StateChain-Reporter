@@ -13,7 +13,8 @@ import {
     Landmark,
     Globe,
     Map,
-    Moon // Added for dark mode toggle
+    Moon, // Added for dark mode toggle
+    BadgeAlert
 } from 'lucide-react'; // White background logo
 import gu from "../assets/guj.png"
 import bh from "../assets/bh.png"
@@ -151,13 +152,14 @@ const StateDashboard = () => {
                                         </p>
                                         
                                         {/* Action Button */}
-                                        <div onClick={() => navigate(`/allIssues/${state.name}`)} className="inline-flex items-center px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 transition-colors">
+                                        <div onClick={() => navigate(`/allIssues/${state.name}`)} className="inline-flex items-center px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 hover:bg-teal-500 transition-colors">
                                             <Flag className="w-4 h-4 mr-2" />
                                             All Issue
                                         </div>
 
-                                        <div onClick={() => navigate(`/issues/${state.name}`)} className="inline-flex items-center mt-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 transition-colors">
-                                            <Flag className="w-4 h-4 mr-2" />
+                                        <div onClick={() => navigate(`/issues/${state.name}`)} className="inline-flex items-center mt-2 px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg group-hover:bg-teal-600 hover:bg-teal-500 transition-colors">
+                                            {/* <Flag className="w-4 h-4 mr-2" /> */}
+                                            <BadgeAlert className="w-4 h-4 mr-2" />
                                             Report Issue
                                         </div>
 
@@ -165,7 +167,7 @@ const StateDashboard = () => {
                                 </div>
                                 
                                 {/* Bottom accent */}
-                                <div className="h-1 bg-gradient-to-r from-teal-400 to-teal-600 rounded-b-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                {/* <div className="h-1 bg-gradient-to-r from-teal-400 to-teal-600 rounded-b-xl opacity-0 group-hover:opacity-100 transition-opacity"></div> */}
                             </div>
                         ))}
                     </div>
