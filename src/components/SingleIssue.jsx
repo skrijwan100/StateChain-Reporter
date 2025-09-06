@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-
+import { useParams } from 'react-router';
+import { BrowserProvider, ethers } from 'ethers';
+import contractofissue from "../contracts/Issue.sol/Issue.json"
+import { ThumbsDown, ThumbsUp } from 'lucide-react';
+import { keccak256, toUtf8Bytes } from "ethers";
 // --- Helper Data ---
 const agreeData = [
-  { address: '0xa44F4...6CCf', date: '8/8/2025, 2:40:12 AM' },
-  { address: '0x7711...E5dc', date: '8/8/2025, 5:26:00 PM' },
-  { address: '0xb2dE...9aB1', date: '8/9/2025, 10:15:30 AM' },
+    { address: '0xa44F4...6CCf', date: '8/8/2025, 2:40:12 AM' },
+    { address: '0x7711...E5dc', date: '8/8/2025, 5:26:00 PM' },
+    { address: '0xb2dE...9aB1', date: '8/9/2025, 10:15:30 AM' },
 ];
 
 const disagreeData = [
-  { address: '0xe695a...117d', date: '8/8/2025, 2:43:24 AM' },
+    { address: '0xe695a...117d', date: '8/8/2025, 2:43:24 AM' },
 ];
 
 
 // --- SVG Icons ---
 // Using functional components for SVG icons for easy customization
 const AlertTriangleIcon = ({ className = "w-6 h-6" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
-    <path d="M12 9v4"></path><path d="M12 17h.01"></path>
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+        <path d="M12 9v4"></path><path d="M12 17h.01"></path>
+    </svg>
 );
 
 const UserIcon = ({ className = "w-5 h-5" }) => (
@@ -57,20 +61,20 @@ const ListIcon = ({ className = "w-6 h-6" }) => (
 
 const LogoIcon = ({ className = "w-8 h-8" }) => (
     <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L2 7l10 5 10 5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 2L2 7l10 5 10 5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
 );
 
 const GlobeIcon = ({ className = "w-5 h-5" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><line x1="2" x2="22" y1="12" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
 );
 
 const ZapIcon = ({ className = "w-5 h-5" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
 );
 
 const LockIcon = ({ className = "w-5 h-5" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
 );
 
 const ShieldIcon = ({ className = "w-5 h-5" }) => (
@@ -93,101 +97,188 @@ const CardTitle = ({ icon, text }) => (
     </div>
 );
 
+
 const ReportDetails = () => {
+    const { id } = useParams()
+    const { ethereum } = window;
+    const [lodedata, setlodedata] = useState(true)
+    const [alldetlis, setalldetlis] = useState({ title: "", story: "", img: "", Owner: "" })
+    const [vote, setvote] = useState([])
+    const [Tnxload, setTnxload] = useState(false)
+    const [dTnxload, setdTnxload] = useState(false)
+    const [reload, setreload] = useState(false)
+    const [votedone, setvotedone] = useState(false)
+    useEffect(() => {
+        const alldetiles = async () => {
+            if (!ethereum) {
+                return alert('Install Window');
+            }
+            const account = await ethereum.request({
+                method: 'eth_requestAccounts',
+            })
+            const fulladdress = account[0]
+            const showaddress = `${fulladdress.slice(0, 4)}...${fulladdress.slice(-4)}`
+            const infuraProvider = new ethers.JsonRpcProvider(
+                import.meta.env.VITE_INFURA_URL
+            )
+            const issuecontarct = new ethers.Contract(
+                id,
+                contractofissue.abi,
+                infuraProvider
+            )
+            const title = await issuecontarct.Ititle();
+            const disciribe = await issuecontarct.Idisc();
+            const I_img = await issuecontarct.Iimg();
+            const Owner = await issuecontarct.OWner();
+            const allvote = await issuecontarct.filters.Showvote()
+            const voteevent = await issuecontarct.queryFilter(allvote)
+            setvote(voteevent)
+            console.log(voteevent)
+            for (let i = 0; i < voteevent.length; i++) {
+                if (
+                    voteevent[i].args.Voter.toLowerCase() === fulladdress.toLowerCase() 
+                ) {
+                    console.log(voteevent[i].args.Voter, fulladdress);
+                    setvotedone(true);
+                }
+            }
+
+            const res = await fetch(`https://${import.meta.env.VITE_GATEWAY_URL}/ipfs/${disciribe}`)
+            const resdata = await res.json()
+            console.log(resdata, title, I_img, Owner)
+            setalldetlis({ title: title, story: resdata.story, img: I_img, Owner: Owner })
+            setlodedata(false)
+
+        }
+        alldetiles()
+
+    }, [reload])
+    const handleaggrevote = async (e) => {
+        e.preventDefault();
+        setTnxload(true)
+        const WalletProvider = new BrowserProvider(ethereum)
+        const signer = await WalletProvider.getSigner();
+        const uservote = new ethers.Contract(
+            id,
+            contractofissue.abi,
+            signer
+        )
+        const uservoteTnx = await uservote.VoteforIssue(1)
+        await uservoteTnx.wait();
+        console.log(uservoteTnx)
+        setTnxload(false)
+        setreload(true)
+    }
+    const handledisaggrevote = async (e) => {
+        e.preventDefault();
+        setdTnxload(true)
+        const WalletProvider = new BrowserProvider(ethereum)
+        const signer = await WalletProvider.getSigner();
+        const uservote = new ethers.Contract(
+            id,
+            contractofissue.abi,
+            signer
+        )
+        const uservoteTnx = await uservote.VoteforIssue(0)
+        await uservoteTnx.wait();
+        console.log(uservoteTnx)
+        setdTnxload(false)
+        setreload(true)
+    }
     return (
         <main className="max-w-screen-xl mx-auto px-6 py-8 text-gray-300">
-            {/* --- Top Section --- */}
-            <InfoCard>
-                <div className="flex items-start mb-4">
-                    <AlertTriangleIcon className="w-7 h-7 text-teal-400 mt-1"/>
-                    <h1 className="ml-3 text-2xl md:text-3xl font-bold text-white">Staff behavior is not good</h1>
-                </div>
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-400">
-                    <div className="flex items-center">
-                        <UserIcon className="mr-2"/>
-                        <span>0x44L..6CC1</span>
-                    </div>
-                    <div className="flex items-center">
-                        <PhoneIcon className="mr-2"/>
-                        <span>1757155093133</span>
-                    </div>
-                </div>
-                <div className="mt-4 text-xs bg-gray-900/70 p-2 rounded-md inline-block font-mono">
-                   ID: 0x6d3e6094af...d38092842d5908b5f8870f3789b88b8
-                </div>
-            </InfoCard>
-
-            {/* --- Description Section --- */}
-            <InfoCard>
-                <CardTitle text="Description" />
-                <p className="text-gray-400 leading-relaxed">
-                    Female college staff includes teaching faculty and non-teaching administrative and support staff. Examples of teaching staff include professors, lecturers, and teaching assistants, while non-teaching staff can include administrators, librarians, lab assistants, and other support personnel. In the context of Women's College, Calcutta, there are several female faculty members across different departments like Bengali, Philosophy, Education, and more, as well as non-teaching staff like librarians and administrative assistants.
-                </p>
-            </InfoCard>
-
-            {/* --- Attached Image Section --- */}
-            <InfoCard>
-                <CardTitle icon={<ImageIcon />} text="Attached Image" />
-                <div className="overflow-hidden rounded-lg w-full h-[20rem]">
-                    <img 
-                      src="https://www.tarapadagarai.site/assets/TARAPADA-DQQzy6pt.jpeg" 
-                      alt="Report evidence" 
-                      className="w-full h-full object-contain"
-                    />
-                </div>
-            </InfoCard>
-
-            {/* --- Community Voting Section --- */}
-            <InfoCard>
-                <CardTitle text="Community Voting" />
-                <div className="text-center">
-                    <p className="text-xl font-bold text-green-400 mb-2">You already done your vote</p>
-                    <p className="text-gray-400 mb-6">Total Votes: {agreeData.length + disagreeData.length}</p>
-                    <div className="flex justify-center gap-4">
-                        <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-                            Agree
-                        </button>
-                        <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-                            Disagree
-                        </button>
-                    </div>
-                </div>
-            </InfoCard>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-                {/* --- Agree Section --- */}
+            {lodedata ? <div className='w-full h-[85vh] flex justify-center items-center '><div className='bigloder'></div></div> : <div>
+                {/* --- Top Section --- */}
                 <InfoCard>
-                    <CardTitle icon={<ListIcon />} text="Addresses that Agree" />
-                    <div className="space-y-3">
-                        {agreeData.map((item, index) => (
-                            <div key={index} className="flex flex-wrap justify-between items-center bg-gray-900/70 p-3 rounded-md">
-                                <span className="font-mono text-sm text-teal-400 mr-4">{item.address}</span>
-                                <div className="flex items-center gap-4">
-                                  <span className="text-xs text-gray-500">{item.date}</span>
-                                  <span className="text-xs font-bold bg-green-500/20 text-green-400 py-1 px-3 rounded-full">Agree</span>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="flex items-start mb-4">
+                        <AlertTriangleIcon className="w-7 h-7 text-teal-400 mt-1" />
+                        <h1 className="ml-3 text-2xl md:text-3xl font-bold text-white">Staff behavior is not good</h1>
+                    </div>
+                    <div className="mt-4 text-xs bg-gray-900/70 p-2 rounded-md inline-block font-mono">
+                        ID: {id}
                     </div>
                 </InfoCard>
 
-                {/* --- Disagree Section --- */}
+                {/* --- Description Section --- */}
                 <InfoCard>
-                    <CardTitle icon={<ListIcon />} text="Addresses that Disagree" />
-                    <div className="space-y-3">
-                        {disagreeData.map((item, index) => (
-                            <div key={index} className="flex flex-wrap justify-between items-center bg-gray-900/70 p-3 rounded-md">
-                                <span className="font-mono text-sm text-teal-400 mr-4">{item.address}</span>
-                                <div className="flex items-center gap-4">
-                                  <span className="text-xs text-gray-500">{item.date}</span>
-                                  <span className="text-xs font-bold bg-red-500/20 text-red-400 py-1 px-3 rounded-full">Disagree</span>
-                                </div>
-                            </div>
-                        ))}
+                    <CardTitle text="Description" />
+                    <p className="text-gray-400 leading-relaxed">
+                        {alldetlis.story}
+                    </p>
+                </InfoCard>
+
+                {/* --- Attached Image Section --- */}
+                <InfoCard>
+                    <CardTitle icon={<ImageIcon />} text="Attached Image" />
+                    <div className="overflow-hidden rounded-lg w-full h-[20rem]">
+                        <img
+                            src={`https://${import.meta.env.VITE_GATEWAY_URL}/ipfs/${alldetlis.img}`}
+                            alt="Report evidence"
+                            className="w-full h-full object-contain"
+                        />
                     </div>
                 </InfoCard>
-            </div>
 
+                {/* --- Community Voting Section --- */}
+                <InfoCard>
+                    <CardTitle text="Community Voting" />
+                    <div className="text-center">
+                        
+                        <p className="text-gray-400 mb-6">Total Votes:{vote.length}</p>
+                  {votedone?<p className="text-xl font-bold text-green-400 mb-2">You already done your vote</p>:<div className="flex justify-center gap-4">
+                            <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                onClick={handleaggrevote}>
+                                {Tnxload ? <div className='w-full flex justify-center items-center '><div className='loder'></div></div> : <div className='flex '>
+                                    <ThumbsUp className="w-5 h-5" />
+                                    <span>Agree</span>
+                                </div>}
+                            </button>
+                            <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                                onClick={handledisaggrevote}>
+                                {dTnxload ? <div className='w-full flex justify-center items-center '><div className='loder'></div></div>
+                                    : <div className='flex items-center justify-center'>
+                                        <ThumbsDown className="w-5 h-5" />
+                                        <span>Disagree</span>
+                                    </div>}
+                            </button>
+                        </div>}
+                    </div>
+                </InfoCard>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                    {/* --- Agree Section --- */}
+                    <InfoCard>
+                        <CardTitle icon={<ListIcon />} text="Addresses that Agree" />
+                        <div className="space-y-3">
+                            {vote.map((item, index) => (
+                                item.args.Votevalue==1?<div key={index} className="flex flex-wrap justify-between items-center bg-gray-900/70 p-3 rounded-md">
+                                    <span className="font-mono text-sm text-teal-400 mr-4">{item.args.Voter}</span>
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-xs text-gray-500">{new Date(parseInt(item.args.time) * 1000).toLocaleString()}</span>
+                                        <span className="text-xs font-bold bg-green-500/20 text-green-400 py-1 px-3 rounded-full">Agree</span>
+                                    </div>
+                                </div>:''
+                            ))}
+                        </div>
+                    </InfoCard>
+
+                    {/* --- Disagree Section --- */}
+                    <InfoCard>
+                        <CardTitle icon={<ListIcon />} text="Addresses that Disagree" />
+                        <div className="space-y-3">
+                            {vote.map((item, index) => (
+                                item.args.Votevalue==0?<div key={index} className="flex flex-wrap justify-between items-center bg-gray-900/70 p-3 rounded-md">
+                                    <span className="font-mono text-sm text-teal-400 mr-4">{item.args.Voter}</span>
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-xs text-gray-500">{new Date(parseInt(item.args.time) * 1000).toLocaleString()}</span>
+                                        <span className="text-xs font-bold bg-red-500/20 text-red-400 py-1 px-3 rounded-full">Disagree</span>
+                                    </div>
+                                </div>:''
+                            ))}
+                        </div>
+                    </InfoCard>
+                </div>
+            </div>}
 
         </main>
     );
@@ -195,12 +286,13 @@ const ReportDetails = () => {
 
 // The main App component that ties everything together.
 export default function SingleIssue() {
-  return (
-    // The main container with a dark gradient background.
-    <div className="min-h-screen bg-[#0d1117] font-sans text-gray-300">
-      <Navbar />
-      <ReportDetails />
-      <Footer />
-    </div>
-  );
+
+    return (
+        // The main container with a dark gradient background.
+        <div className="min-h-screen bg-[#0d1117] font-sans text-gray-300">
+            <Navbar />
+            <ReportDetails />
+            <Footer />
+        </div>
+    );
 }

@@ -51,8 +51,8 @@ contract Issue {
     bytes32 public voteId;
     address public OWner;
     uint public Vote;
-    bytes32 public VoterTake;
-event Showvote(uint indexed Votevalue, bytes32 indexed Voter, uint256 time);
+    address public VoterTake;
+event Showvote(uint indexed Votevalue, address indexed Voter, uint256 time);
 
     constructor(
         string memory _Ititle,
@@ -70,9 +70,9 @@ event Showvote(uint indexed Votevalue, bytes32 indexed Voter, uint256 time);
         OWner=_Owner;
     }
 
-    function VoteforIssue(uint256 _vote, bytes32 _voterId) public {
+    function VoteforIssue(uint256 _vote) public {
         Vote = _vote;
-        VoterTake=_voterId;
+        VoterTake=msg.sender;
         emit Showvote(Vote,VoterTake, block.timestamp);
     }
 }

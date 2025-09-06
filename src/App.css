@@ -10,3 +10,15 @@
   margin: 0 auto;
   vertical-align: middle;
 }
+.loder {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 4px solid rgba(0, 255, 213, 0.807);
+  border-top: 4px solid #2e6dff;
+  /* purple-700 */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  vertical-align: middle;
+}
