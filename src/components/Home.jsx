@@ -15,7 +15,7 @@ import {
     Map,
     Moon // Added for dark mode toggle
 } from 'lucide-react'; // White background logo
-import wbimg from "../assets/wb.png"
+import gu from "../assets/guj.png"
 import bh from "../assets/bh.png"
 import ke from "../assets/ke.png"
 import mh from "../assets/mh.png"
@@ -29,6 +29,22 @@ import as from "../assets/as.png"
 import ga from "../assets/ga.png"
 import ch from "../assets/ch.png"
 import pb from "../assets/pb.png"
+import har from "../assets/har.png"
+import hima from "../assets/hima.png"
+import jhar from "../assets/jhar.png"
+import mp from "../assets/mp.png"
+import mani from "../assets/mani.png"
+import me from "../assets/me.png"
+import mi from "../assets/mi.png"
+import sik from "../assets/sik.png"
+import tn from "../assets/tn.png"
+import tl from "../assets/tl.png"
+import tr from "../assets/tr.png"
+import up from "../assets/up.png"
+import uk from "../assets/uk.png"
+import wb from "../assets/wb.png"
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 // Main Component
 const StateDashboard = () => {
@@ -49,30 +65,29 @@ const StateDashboard = () => {
       { id: 4, name: "Bihar", icon: bh, code: "BR" },
       { id: 5, name: "Chhattisgarh", icon: ch, code: "CG" },
       { id: 6, name: "Goa", icon: ga, code: "GA" },
-      { id: 7, name: "Gujarat", icon: wbimg, code: "GJ" },
-      { id: 8, name: "Haryana", icon: wbimg, code: "HR" },
-      { id: 9, name: "Himachal Pradesh", icon: wbimg, code: "HP" },
-      { id: 10, name: "Jharkhand", icon: wbimg, code: "JH" },
+      { id: 7, name: "Gujarat", icon: gu, code: "GJ" },
+      { id: 8, name: "Haryana", icon: har, code: "HR" },
+      { id: 9, name: "Himachal Pradesh", icon: hima, code: "HP" },
+      { id: 10, name: "Jharkhand", icon: jhar, code: "JH" },
       { id: 11, name: "Karnataka", icon: ka, code: "KA" },
       { id: 12, name: "Kerala", icon: ke, code: "KL" },
-      { id: 13, name: "Madhya Pradesh", icon: wbimg, code: "MP" },
+      { id: 13, name: "Madhya Pradesh", icon: mp, code: "MP" },
       { id: 14, name: "Maharashtra", icon: mh, code: "MH" },
-      { id: 15, name: "Manipur", icon: wbimg, code: "MN" },
-      { id: 16, name: "Meghalaya", icon: wbimg, code: "ML" },
-      { id: 17, name: "Mizoram", icon: wbimg, code: "MZ" },
+      { id: 15, name: "Manipur", icon: mani, code: "MN" },
+      { id: 16, name: "Meghalaya", icon: me, code: "ML" },
+      { id: 17, name: "Mizoram", icon: mi, code: "MZ" },
       { id: 18, name: "Nagaland", icon: nl, code: "NL" },
       { id: 19, name: "Odisha", icon: od, code: "OD" },
       { id: 20, name: "Punjab", icon: pb, code: "PB" },
       { id: 21, name: "Rajasthan", icon: rj, code: "RJ" },
-      { id: 22, name: "Sikkim", icon: wbimg, code: "SK" },
-      { id: 23, name: "Tamil Nadu", icon: wbimg, code: "TN" },
-      { id: 24, name: "Telangana", icon: wbimg, code: "TS" },
-      { id: 25, name: "Tripura", icon: wbimg, code: "TR" },
-      { id: 26, name: "Uttar Pradesh", icon: wbimg, code: "UP" },
-      { id: 27, name: "Uttarakhand", icon: wbimg, code: "UK" },
-      { id: 28, name: "West Bengal", icon: wbimg, code: "WB" },
+      { id: 22, name: "Sikkim", icon: sik, code: "SK" },
+      { id: 23, name: "Tamil Nadu", icon: tn, code: "TN" },
+      { id: 24, name: "Telangana", icon: tl, code: "TS" },
+      { id: 25, name: "Tripura", icon: tr, code: "TR" },
+      { id: 26, name: "Uttar Pradesh", icon: up, code: "UP" },
+      { id: 27, name: "Uttarakhand", icon: uk, code: "UK" },
+      { id: 28, name: "West Bengal", icon: wb, code: "WB" },
     ];
-
 
     // Handle click on a state card
     const handleStateClick = (state) => {
@@ -87,34 +102,7 @@ const StateDashboard = () => {
         <div className={`${theme}`}>
             <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex flex-col transition-colors duration-500">
                 {/* Navbar */}
-                <nav className="bg-blue-800 dark:bg-slate-800 text-white shadow-lg sticky top-0 z-50">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="flex justify-between items-center h-16">
-                            <div className="flex items-center space-x-2">
-                                <Zap className="w-8 h-8 text-teal-400" />
-                                <h1 className="text-xl font-bold">StateChain Reporter</h1>
-                            </div>
-                            <div className="hidden md:flex items-center space-x-6">
-                                <a href="#" className="hover:text-teal-300 transition-colors">Dashboard</a>
-                                <a href="#" className="hover:text-teal-300 transition-colors">Reports</a>
-                                <a href="#" className="hover:text-teal-300 transition-colors">Analytics</a>
-                                <a href="#" className="hover:text-teal-300 transition-colors">Profile</a>
-                            </div>
-                            <div className="flex items-center space-x-4">
-                                <div className="flex items-center space-x-2">
-                                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                                    <span className="text-sm">Blockchain Connected</span>
-                                </div>
-                                <button
-                                    onClick={toggleTheme}
-                                    className="p-2 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 dark:focus:ring-offset-slate-800 focus:ring-white"
-                                >
-                                    {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+                <Navbar theme={theme} toggleTheme={toggleTheme} />
 
                 {/* Main Content */}
                 <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -271,37 +259,7 @@ const StateDashboard = () => {
                 </main>
 
                 {/* Footer */}
-                <footer className="bg-blue-800 dark:bg-slate-800 text-white">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                        <div className="flex flex-col md:flex-row justify-between items-center">
-                            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                                <Zap className="w-6 h-6 text-teal-400" />
-                                <span className="font-semibold">StateChain Reporter</span>
-                                <span className="text-sm text-gray-300 dark:text-gray-400">v2.0</span>
-                            </div>
-                            
-                            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm">
-                                <a href="#" className="hover:text-teal-300 transition-colors">Privacy Policy</a>
-                                <a href="#" className="hover:text-teal-300 transition-colors">Terms of Service</a>
-                                <a href="#" className="hover:text-teal-300 transition-colors">Smart Contract</a>
-                                <a href="#" className="hover:text-teal-300 transition-colors">Government Portal</a>
-                                <span className="text-gray-300 dark:text-gray-400">© 2025 StateChain. All rights reserved.</span>
-                            </div>
-                        </div>
-                        
-                        <div className="mt-4 pt-4 border-t border-blue-700 dark:border-slate-700">
-                            <div className="flex items-center justify-center space-x-4 text-xs text-gray-300 dark:text-gray-400">
-                                <span>🔗 Ethereum Mainnet</span>
-                                <span>•</span>
-                                <span>⚡ Gas Fee: Optimal</span>
-                                <span>•</span>
-                                <span>🔒 End-to-End Encrypted</span>
-                                <span>•</span>
-                                <span>🏛️ Government Verified</span>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                <Footer />
             </div>
         </div>
     );
