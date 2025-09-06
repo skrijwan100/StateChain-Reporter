@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { Link } from 'react-router';
 
 const StateChainLogo = () => (
   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block mr-2 text-cyan-400">
@@ -73,7 +74,7 @@ const VerifiedIcon = () => (
     </svg>
 );
 
-function SuccessContent() {
+function SuccessContent({Tnxhash,issueId}) {
   return (
     <main className="flex-grow flex items-center justify-center text-white py-18 px-4">
       <div className="w-full max-w-2xl text-center">
@@ -95,32 +96,30 @@ function SuccessContent() {
           <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-4 flex justify-between items-center">
             <div>
               <p className="text-xs text-cyan-400 font-semibold mb-1">Contract Address:</p>
-              <p className="font-mono text-sm">0xf2ad6845...3E79C8e4</p>
+              <p className="font-mono text-sm">{issueId}</p>
             </div>
             <div className="flex items-center space-x-4 text-gray-400">
               <CopyIcon />
-              <ExternalLinkIcon />
             </div>
           </div>
           <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-4 flex justify-between items-center">
             <div>
               <p className="text-xs text-cyan-400 font-semibold mb-1">Transaction Hash:</p>
-              <p className="font-mono text-sm">0x72057997...1d8bc24b</p>
+              <p className="font-mono text-sm">{Tnxhash}</p>
             </div>
             <div className="flex items-center space-x-4 text-gray-400">
               <CopyIcon />
-              <ExternalLinkIcon />
             </div>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-12">
-          <button className="w-full cursor-pointer sm:w-auto flex items-center justify-center bg-cyan-600 hover:bg-cyan-500 transition-colors font-semibold py-3 px-6 rounded-lg">
+          <Link to="/"><button className="w-full cursor-pointer sm:w-auto flex items-center justify-center bg-cyan-600 hover:bg-cyan-500 transition-colors font-semibold py-3 px-6 rounded-lg">
             <GoHomeIcon /> Go To Home Page
-          </button>
-          <button className="w-full sm:w-auto flex cursor-pointer items-center gap-2 justify-center bg-gray-700/50 hover:bg-gray-700/80 transition-colors font-semibold py-3 px-6 rounded-lg border border-gray-600">
+          </button></Link>
+          <a target='_blank' href={`https://sepolia.etherscan.io/tx/${Tnxhash}`}><button className="w-full sm:w-auto flex cursor-pointer items-center gap-2 justify-center bg-gray-700/50 hover:bg-gray-700/80 transition-colors font-semibold py-3 px-6 rounded-lg border border-gray-600">
             <ExternalLinkIcon /> View on Explorer
-          </button>
+          </button></a>
         </div>
 
         <p className="text-sm text-gray-500">
@@ -132,11 +131,11 @@ function SuccessContent() {
 }
 
 
-export default function SuccessSubmit() {
+export default function SuccessSubmit({Tnxhash,issueId}) {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1f36] to-[#2c234b]">
       <Navbar />
-      <SuccessContent />
+      <SuccessContent Tnxhash={Tnxhash} issueId={issueId} />
       <Footer />
     </div>
   );

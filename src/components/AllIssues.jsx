@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { useNavigate, useParams } from 'react-router-dom';
-import SuccessSubmit from './SuccessSubmit';
-
+import issuecontract from "../contracts/Issue.sol/AllIssue.json"
+import { ethers } from 'ethers';
+import { Calendar } from 'lucide-react';
 // Data for the issues - in a real app, this would come from an API
 const issuesData = [
     {
@@ -82,17 +83,15 @@ const IssueCard = ({ issue }) => {
     const { stateName } = useParams();
     return (
         <div className="bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-teal-500/10 hover:border-teal-500 transition-all duration-300 transform hover:-translate-y-1">
-            <img className="w-full h-48 mt-6 object-contain" src={issue.imageUrl} alt={issue.altText} />
+            <img className="w-full h-48 mt-6 object-contain" src={`https://${import.meta.env.VITE_GATEWAY_URL}/ipfs/${issue.args.img}`} alt="This is our issue" />
             <div className="p-5">
-                <h2 className="text-xl font-bold text-white mb-2">{issue.title}</h2>
-                <p className="text-xs text-gray-400 truncate mb-4">{issue.hash}</p>
+                <h2 className="text-xl font-bold text-white mb-2">{issue.args.title}</h2>
+                <p className="text-x text-gray-400 truncate mb-4">Address:{issue.args.issueaddress}</p>
                 <div className="flex items-center text-sm text-gray-400 mb-4">
-                    <UserIcon />
-                    <span>{issue.user}</span>
-                    <span className="mx-2">·</span>
-                    <span>{issue.timestamp}</span>
+                    <Calendar className="w-4 h-4 mr-1" />
+                    <span>{new Date(parseInt(issue.args.time) * 1000).toLocaleString()}</span>
                 </div>
-                <button onClick={() => navigate(`/allIssues/${stateName}/${issue.hash}`)} className="w-full cursor-pointer bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50">
+                <button onClick={() => navigate(`/allIssues/${stateName}/${issue.args.issueaddress}`)} className="w-full cursor-pointer bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50">
                     View Details
                 </button>
             </div>
@@ -103,12 +102,34 @@ const IssueCard = ({ issue }) => {
 
 // Main App Component
 export default function AllIssues() {
+    const { stateName } = useParams();
+    const [issuedata, setIssuedata] = useState([])
+    const [fecthloder,setfecthloder]=useState(false)
+    useEffect(() => {
+        const fecthblockdata = async () => {
+            setfecthloder(true)
+            const infuraProvider = new ethers.JsonRpcProvider(
+                import.meta.env.VITE_INFURA_URL
+            )
+            const issuecontratcget = new ethers.Contract(
+                import.meta.env.VITE_CONTRACT_DEPOLY_ADDRESS,
+                issuecontract.abi,
+                infuraProvider
+            )
+            const depocontract = await issuecontratcget.filters.saveIssue(null, null, null, stateName)
+            const event = await issuecontratcget.queryFilter(depocontract)
+            setIssuedata(event)
+            console.log(event)
+            setfecthloder(false)
+        }
+        fecthblockdata()
+    }, [])
     return (
         <div className="bg-gray-900 text-gray-300 font-sans">
             <div className="flex flex-col min-h-screen">
                 <Navbar />
 
-                <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-24 py-8 md:py-12">
+                {fecthloder?<div className='w-full h-[85vh] flex justify-center items-center '><div className='bigloder'></div></div>:<main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-24 py-8 md:py-12">
                     <div className="mb-12 flex items-center flex-col justify-center">
                         <h1 className="text-4xl font-bold text-white tracking-tight mb-2">State Issue Reporting System</h1>
                         <p className="text-lg text-gray-400 mb-4">Select your state to report issues securely on the blockchain</p>
@@ -129,12 +150,12 @@ export default function AllIssues() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {issuesData.map(issue => (
-                            <IssueCard key={issue.id} issue={issue} />
+                        {issuedata.map((issue, index) => (
+                            <IssueCard key={index} issue={issue} />
                         ))}
                     </div>
                 </main>
-
+}
                 <Footer />
             </div>
         </div>

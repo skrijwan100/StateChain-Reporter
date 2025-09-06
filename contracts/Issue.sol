@@ -7,7 +7,7 @@ contract AllIssue {
         string title,
         string disc,
         string img,
-        string state,
+        string indexed state,
         bytes32 indexed  voterId,
         address  owner,
         address indexed issueaddress,

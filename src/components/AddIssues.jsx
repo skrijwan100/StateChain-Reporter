@@ -10,7 +10,7 @@ import SuccessPage from './suc';
 import Login from './Login.jsx'
 import { useVerify } from '../contexts/verifyContext';
 import { useParams } from 'react-router';
-
+import SuccessSubmit from "../components/SuccessSubmit.jsx"
 
 const FileTextIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 mr-3">
@@ -37,13 +37,15 @@ export default function AddIssues() {
   const [imgloder, setImgLoder] = useState(false)
   const [isSubmit, setisSubmit] = useState(false)
   const { stateName } = useParams()
+  const [Tnxhash, setTnxhash] = useState('')
+  const [issueId, setIssueId] = useState('')
   const [detailsOfVoter, setdetailsOfVoter] = useState({
     voterId: 'VOT123',
     state: stateName,
     issueTitle: '',
     issueStory: ''
   })
-  const [lodscpage,setlodscpage]=useState(false)
+  const [lodscpage, setlodscpage] = useState(false)
   const { ethereum } = window;
   useState(() => {
     const connectwallate = async () => {
@@ -159,12 +161,15 @@ export default function AddIssues() {
     )
     await issuedata.wait();
     console.log(issuedata)
+    setIssueId(issuedata.to)
+    setTnxhash(issuedata.hash)
     setisSubmit(false)
+    setlodscpage(true)
     handleSuccess('Issue is Submited')
   }
-  if(lodscpage){
-    return(
-      <SuccessPage/>
+  if (lodscpage) {
+    return (
+      <SuccessSubmit Tnxhash={Tnxhash} issueId={issueId} />
     )
   }
   return (

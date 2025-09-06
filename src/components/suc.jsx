@@ -33,7 +33,7 @@ const tickAnimationStyle = `
 }
 `;
 
-const SuccessPage = ({ theme }) => {
+const SuccessPage = ({ theme, issueId,Tnxhash }) => {
   const contractAddress = "0xF2ad6845...3E79CBe4";
   const transactionHash = "0x72057997...1dbc24b";
 
@@ -88,8 +88,8 @@ const SuccessPage = ({ theme }) => {
             <div className="bg-sky-50 dark:bg-slate-800 rounded-lg py-3 px-4 mb-3 flex items-center justify-between transition-colors">
               <div className="text-left">
                 <span className="text-xs text-[#339edc] dark:text-sky-400 font-semibold select-text">● Contract Address:</span>
-                <div className="font-mono text-sm text-gray-900 dark:text-gray-100 truncate max-w-[18rem]" title={contractAddress}>
-                  {contractAddress}
+                <div className="font-mono text-sm text-gray-900 dark:text-gray-100 truncate max-w-[18rem]" title={issueId}>
+                  {issueId}
                 </div>
               </div>
               <div className="flex items-center space-x-2 ml-2">
@@ -116,7 +116,7 @@ const SuccessPage = ({ theme }) => {
             <div className="bg-sky-50 dark:bg-slate-800 rounded-lg py-3 px-4 mb-6 flex items-center justify-between transition-colors">
               <div className="text-left">
                 <span className="text-xs text-[#339edc] dark:text-sky-400 font-semibold select-text">● Transaction Hash:</span>
-                <div className="font-mono text-sm text-gray-900 dark:text-gray-100 truncate max-w-[18rem]" title={transactionHash}>
+                <div className="font-mono text-sm text-gray-900 dark:text-gray-100 truncate max-w-[18rem]" title={Tnxhash}>
                   {transactionHash}
                 </div>
               </div>
