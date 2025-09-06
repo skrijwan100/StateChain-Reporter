@@ -6,6 +6,8 @@ import { BrowserProvider, ethers } from 'ethers';
 import { handleError, handleSuccess } from './ErrorMessage';
 import issuecontract from "../contracts/Issue.sol/AllIssue.json"
 import { keccak256, toUtf8Bytes } from "ethers";
+import SuccessPage from './suc';
+import Login from './Login.jsx'
 
 
 const FileTextIcon = () => (
@@ -37,6 +39,7 @@ export default function AddIssues() {
     issueTitle: '',
     issueStory: ''
   })
+  const [lodscpage,setlodscpage]=useState(true)
   const { ethereum } = window;
   useState(() => {
     const connectwallate = async () => {
@@ -154,6 +157,11 @@ export default function AddIssues() {
     console.log(issuedata)
     setisSubmit(false)
     handleSuccess('Issue is Submited')
+  }
+  if(lodscpage){
+    return(
+      <Login/>
+    )
   }
   return (
     <div className="min-h-screen w-full bg-slate-900 text-white font-sans antialiased">

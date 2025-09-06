@@ -1,6 +1,6 @@
 # 🌐 StateChain Reporter – Decentralized State-Wise Issue Reporting Platform
 
-![Built with](https://img.shields.io/badge/Built%20with-React%20%7C%20Node%20%7C%20Hardhat%20%7C%20IPFS-0ea5e9)
+![Built with](https://img.shields.io/badge/Built%20with-React%20%7C%20Hardhat%20%7C%20IPFS-0ea5e9)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Prototype-blue)
 
