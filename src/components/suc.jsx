@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ClipboardCopy, ExternalLink } from 'lucide-react';
 
 const tickAnimationStyle = `
@@ -49,6 +49,15 @@ const SuccessPage = ({ theme, issueId,Tnxhash }) => {
       setTimeout(() => setCopiedLabel(null), 2000);
     });
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
 
   return (
     <>

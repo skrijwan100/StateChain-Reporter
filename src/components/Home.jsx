@@ -116,6 +116,15 @@ fecthallvotedata()
         { id: 28, name: "West Bengal", icon: wb, code: "WB" },
     ];
 
+    useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }, []);
+
     // Handle click on a state card
     const handleStateClick = (state) => {
         setSelectedState(state);
