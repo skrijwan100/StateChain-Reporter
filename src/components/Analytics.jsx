@@ -62,10 +62,9 @@ export default function Analytics() {
         </p>
         <form className="space-y-4">
           <select className="w-full p-3 rounded-xl bg-slate-900 text-gray-400">
-            <option>Project Type</option>
-            <option>Web App</option>
-            <option>Mobile App</option>
-            <option>Dashboard</option>
+            <option>Road Project</option>
+            <option>Bridge Project</option>
+            <option>Railway Project</option>
           </select>
           <input
             type="text"
@@ -78,12 +77,6 @@ export default function Analytics() {
             <option>6-10</option>
             <option>10+</option>
           </select>
-          <input
-            type="range"
-            min="1000"
-            max="10000"
-            className="w-full"
-          />
           <button
             type="submit"
             className="bg-teal-500 px-6 py-2 rounded-xl font-semibold text-white"

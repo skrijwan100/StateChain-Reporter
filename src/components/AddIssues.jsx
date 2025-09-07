@@ -9,7 +9,7 @@ import { keccak256, toUtf8Bytes } from "ethers";
 import SuccessPage from './suc';
 import Login from './Login.jsx'
 import { useVerify } from '../contexts/verifyContext';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import SuccessSubmit from "../components/SuccessSubmit.jsx"
 
 const FileTextIcon = () => (
@@ -47,10 +47,12 @@ export default function AddIssues() {
   })
   const [lodscpage, setlodscpage] = useState(false)
   const { ethereum } = window;
+  const naviget=useNavigate()
   useState(() => {
     const connectwallate = async () => {
       if (!ethereum) {
-        return alert('Install Window');
+        alert('Install Window');
+        return naviget("/")
       }
       const account = await ethereum.request({
         method: 'eth_requestAccounts',
