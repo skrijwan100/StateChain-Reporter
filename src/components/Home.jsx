@@ -143,7 +143,7 @@ fecthallvotedata()
                 {/* Main Content */}
                 <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {/* Header Section */}
-                    <div className="mb-8">
+                    <div className="mb-8 flex flex-col items-center">
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">State Issue Reporting System</h2>
                         <p className="text-gray-600 dark:text-gray-400 text-lg">Select your state to report issues securely on the blockchain</p>
                         <div className="mt-4 flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
