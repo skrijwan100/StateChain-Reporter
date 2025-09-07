@@ -68,7 +68,12 @@ export default function Analytics() {
           </select>
           <input
             type="text"
-            placeholder="Estimated Duration"
+            placeholder="Your Contact number"
+            className="w-full p-3 rounded-xl bg-slate-900 text-gray-400"
+          />
+          <input
+            type="text"
+            placeholder="Your budged"
             className="w-full p-3 rounded-xl bg-slate-900 text-gray-400"
           />
           <select className="w-full p-3 rounded-xl bg-slate-900 text-gray-400">
