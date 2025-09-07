@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { BrowserProvider, ethers } from 'ethers';
 import contractofissue from "../contracts/Issue.sol/Issue.json"
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
@@ -108,10 +108,13 @@ const ReportDetails = () => {
     const [dTnxload, setdTnxload] = useState(false)
     const [reload, setreload] = useState(false)
     const [votedone, setvotedone] = useState(false)
+    const naviget=useNavigate()
     useEffect(() => {
         const alldetiles = async () => {
             if (!ethereum) {
-                return alert('Install Window');
+                alert('Install Window');
+                return naviget("/")
+
             }
             const account = await ethereum.request({
                 method: 'eth_requestAccounts',
