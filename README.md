@@ -36,7 +36,7 @@ A decentralized web app where anyone can submit and explore civic issues.
 
 ---
 
-## 🚀 Why MetaMorph
+## 🚀 Why StateChain Reporter
 - ✨ **Transparency:** Issues can’t be edited or removed after submission.
 - 🔐 **Security:** Reports on-chain; images on IPFS.
 - 📢 **Community-driven:** DAO-based moderation & voting (future).
@@ -54,4 +54,11 @@ A decentralized web app where anyone can submit and explore civic issues.
 
 ---
 
-## 🧱 Architecture (High-Level)
+## 👨‍💻 Team  
+
+- *SK RIJWAN* – BLOCKCHAIN & LOGIC BUILDER
+- *TARAPADA GARAI* – Frontend Development & UI/UX
+- *ARGHA BENERJEE* – Frontend Development & PRESENTATION 
+- *AKASH TIWIRI* – SILENT CODER WITH USEFUL CODE
+
+---
