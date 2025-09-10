@@ -206,7 +206,7 @@ setIsVerified(false)
                                         <button
                                             onClick={checkVoterId}
                                             className="w-full cursor-pointer bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 shadow-lg transform hover:scale-105 flex items-center justify-center"
-                                        >Macth the state
+                                        >Match the state
                                         </button>
                                         : <button
                                             onClick={getCurrentLocation}

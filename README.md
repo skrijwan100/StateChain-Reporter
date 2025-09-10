@@ -56,9 +56,10 @@ A decentralized web app where anyone can submit and explore civic issues.
 
 ## 👨‍💻 Team  
 
-- *SK RIJWAN* – BLOCKCHAIN & LOGIC BUILDER
-- *TARAPADA GARAI* – Frontend Development & UI/UX
-- *ARGHA BENERJEE* – Frontend Development & PRESENTATION 
-- *AKASH TIWIRI* – SILENT CODER WITH USEFUL CODE
+- *SK RIJWAN* – BLOCKCHAIN & LOGIC BUILDER & BACKNED DEVOLOPER
+- *NILAYESH ADHIKARI* – Frontend Development
+- *NITISH KUMAR* – Frontend Development 
+- *BIBEK SAEKAR* – Frontend Development 
+- *ANKITA DAS* - HTML & CSS DEVOLOPER
 
 ---
