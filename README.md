@@ -60,6 +60,5 @@ A decentralized web app where anyone can submit and explore civic issues.
 - *NILAYESH ADHIKARI* – Frontend Development
 - *NITISH KUMAR* – Frontend Development 
 - *BIBEK SAEKAR* – Frontend Development 
-- *ANKITA DAS* - HTML & CSS DEVOLOPER
-
+- *ANKITA DAS* - HTML & CSS DEVOLOPERS
 ---

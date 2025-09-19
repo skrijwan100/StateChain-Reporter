@@ -14,6 +14,7 @@ contract AllIssue {
         uint256 time
     );
 
+
     function CreateIssue(
         string memory _title,
         string memory _disc,
